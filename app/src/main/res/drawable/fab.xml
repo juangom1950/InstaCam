@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Add press colors for floating action buttons pre 21-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">>
+  <!--The selector is going let us select between the different states
+     of whatever we get this drawable to. There are two states that we are going to consider
+     press and not press-->
+  <item android:state_pressed="false"
+        android:drawable="@drawable/fab_default" />
+        <item android:state_pressed="true">
+          <shape android:shape="oval">
+            <solid android:color="@color/primary_dark"></solid>
+          </shape>
+        </item>
+
+</selector>
