@@ -54,11 +54,11 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
                 mPhoto = new Photo();
 
                 //mFilePhoto = mPhoto.getFile();
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-                mFilePhoto = new File(directory, "sample.jpeg");
+                //File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+                //mFilePhoto = new File(directory, "sample.jpeg");
 
                 //Second parameter is going to create a string that lets the camera know were is it going to save the photo
-                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mFilePhoto));
+                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhoto.getFile()));
 
                 startActivityForResult(i, CAMERA_REQUEST);
             }
