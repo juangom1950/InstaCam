@@ -10,6 +10,7 @@ import java.util.UUID;
  */
 public class Photo {
 
+    private static final File sDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
     private UUID mId;
 
     Photo() {
@@ -21,9 +22,6 @@ public class Photo {
     }
 
     public File getFile(){
-        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        File photo = new File(directory, "sample.jpeg");
-        return photo;
-        //return  new File(directory, mId.toString());
+        return new File(sDirectory, mId.toString());
     }
 }
