@@ -24,17 +24,13 @@ import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
 
 
-//public class MainActivity extends ActionBarActivity implements android.support.v7.widget.ShareActionProvider.OnShareTargetSelectedListener{
-//public class MainActivity extends ActionBarActivity implements MaterialTabListener {
 public class MainActivity extends ActionBarActivity implements MaterialTabListener {
 
-    private static final int CAMERA_REQUEST = 10;
+    private static final int NEW_PHOTO_REQUEST = 10;
     private static final String TAG = "MainActivity";
-    public Photo mPhoto;
     private FeedFragment mFeedFragment;
     private MaterialTabHost mTabBar;
     private ProfileFragment mProfileFragment;
-    private File mFilePhoto;
 
 
     @Override
@@ -47,38 +43,10 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
             @Override
             public void onClick(View v) {
 
-                //We need to give it a file were we want the image save, and hen when the camera is done it is going to give us the result
-                //MediaStore.ACTION_IMAGE_CAPTURE this will lunch the camera app
-                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                mPhoto = new Photo();
-
-                //mFilePhoto = mPhoto.getFile();
-                //File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-                //mFilePhoto = new File(directory, "sample.jpeg");
-
-                //Second parameter is going to create a string that lets the camera know were is it going to save the photo
-                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhoto.getFile()));
-
-                startActivityForResult(i, CAMERA_REQUEST);
+                Intent i = new Intent(MainActivity.this, NewPhotoActivity.class);
+                startActivityForResult(i, NEW_PHOTO_REQUEST);
             }
         });
-
-        /*Button button =  (Button)findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-                mFilePhoto = new File(directory, "sample.jpeg");
-
-                //Second parameter is going to create a string that lets the camera know were is it going to save the photo
-                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mFilePhoto));
-
-                startActivityForResult(i, CAMERA_REQUEST);
-            }
-        });*/
 
         //Set toolbar as an actionbar
         Toolbar toolbar =  (Toolbar)findViewById(R.id.toolbar);
@@ -120,79 +88,17 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
 
     }
 
-    //public void onClick(View v) {
-
-        //Send email.
-        //Check this link http://javatechig.com/android/how-to-send-email-in-android
-        //Send email without user interaction: http://www.mindstick.com/Articles/177fc802-a020-4c9f-970c-af73773cd911/Sending%20mail%20without%20user%20interaction%20in%20Android#.VbPH1_lViko
-        //How to add dependency (.jar .aar) in Android Studio: https://www.youtube.com/watch?v=dpuJPoXkFG4
-        //Android Studio: How to add library (jar) as dependency in android studio: https://www.youtube.com/watch?v=tfPgx6c5wgA
-        //Android Studio Tutorials || Adding a Jar library: https://www.youtube.com/watch?v=fHEvI_G6UtI
-                /*Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"juangom73@gmail.con"});
-                emailIntent.putExtra(Intent.EXTRA_CC, new String[]{"juangom73@yahoo.con"});
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-                emailIntent.putExtra(Intent.EXTRA_TEXT, "Body");
-
-                emailIntent.setType("message/rfc822");
-                startActivity(Intent.createChooser(emailIntent, "Choose email client..."));*/
-
-                /*//Send a message
-                Intent i = new Intent(Intent.ACTION_SEND);
-
-                i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_SUBJECT, "Hey");
-                i.putExtra(Intent.EXTRA_TEXT, "This is a message!");
-                startActivity(i);*/
-
-
-
-
-    //}
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CAMERA_REQUEST) {
+        if (requestCode == NEW_PHOTO_REQUEST) {
             if (resultCode == RESULT_OK) {
 
-                //Log.d(TAG, "We took a picture. Get file is "+ mPhoto.getFile());
-
-
-                //Log.d(TAG, "We took a picture test ");
-//
-                //   mFilePhoto = new File("/storage/emulated/0/DCIM/sample.jpeg//");
-                //mFilePhoto = mPhoto.getFile();
-
-                //Log.d(TAG, "We took a picture test " + mFilePhoto);
-                //Uri infData = Uri.fromFile(mFilePhoto);
-//
-//                Intent i = new Intent(Intent.ACTION_VIEW);
-//                i.setDataAndType(Uri.fromFile(mFilePhoto), "image/jpeg");
-//
-//                //Activity start another activity where you ca see the photo
-//                startActivity(i);
-
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setDataAndType(Uri.fromFile(mPhoto.getFile()), "image/jpeg");
-
-                startActivity(i);
             }
 
         }
     }
-
-
-
-    /*//This is a method require when implement this interface ShareActionProvider.OnShareTargetSelectedListener
-    @Override
-    public boolean onShareTargetSelected(android.support.v7.widget.ShareActionProvider source, Intent intent) {
-        //It will start whatever intent was selected
-        startActivity(intent);
-
-        return false;
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

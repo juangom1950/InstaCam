@@ -32,6 +32,8 @@ dependencies {
     compile 'com.juan.material:material:0.1.0'
     //Add tab libraries to our project
     compile 'it.neokree:MaterialTabs:0.11'
+    //Add picasso library
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
 
 }
