@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="bitfontain.juangomez.com.instacam" >
 
+    <!--Our own app is trying to get something from file and read it, so we need to ad permission to do that -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application

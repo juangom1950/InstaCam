@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
@@ -38,12 +40,20 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     private List<Photo> mPhotos;
     private Context mContext;
 
-    //Add these override methods and this adapter. right click > generate... > Override Methods...
+    //Add these override methods and this constructor. right click > generate... > Override Methods...
     // choose methods that you want to add
     //After this you need to create the layout for the feed item (feed_item.xml)
     public FeedAdapter(Context context,  List<Photo> photos) {
         mContext = context;
         mPhotos = photos;
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.feed_item, viewGroup, false);
+
+        return new ViewHolder(v);
     }
 
     @Override
@@ -55,13 +65,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
 
+        //Get specific photo
+        Photo photo = mPhotos.get(i);
+        //Add photo
+        Picasso.with(mContext).load(photo.getFile()).into(viewHolder.mPhoto);
+        ///Add captions
+        viewHolder.mCaption.setText(photo.getCaption());
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.feed_item, viewGroup, false);
-
-        return new ViewHolder(v);
-    }
 }
