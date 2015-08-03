@@ -37,7 +37,8 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
+        //Floating action button
         ImageButton cameraFAB =  (ImageButton)findViewById(R.id.camera_fab);
         cameraFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +95,8 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
 
         if (requestCode == NEW_PHOTO_REQUEST) {
             if (resultCode == RESULT_OK) {
+                Photo photo = (Photo)data.getSerializableExtra(NewPhotoActivity.PHOTO_EXTRA);
+                mFeedFragment.addPhoto(photo);
 
             }
 

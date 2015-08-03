@@ -38,13 +38,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"/>
 
-    <!--<Button
-      android:id="@+id/button"
-      android:text="SEND"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>-->
-
-    Add shadow to the image android:elevation="8dp"
+    <!--Add shadow to the image android:elevation="8dp"-->
     <ImageButton
       android:id="@+id/camera_fab"
       android:src="@drawable/ic_camera"

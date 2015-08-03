@@ -7,6 +7,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -15,7 +18,8 @@ import com.squareup.picasso.Picasso;
 public class NewPhotoActivity extends ActionBarActivity {
 
     private static final int CAMERA_REQUEST = 20;
-    public static final String PHOTO_STATE_EXTRA = "PHOTO";
+    public static final String PHOTO_EXTRA = "PHOTO_EXTRA";
+    private static final String PHOTO_STATE_EXTRA = "PHOTO";
     private ImageView mPreview;
     Photo mPhoto;
     //public BroadcastReceiver bc receiver =
@@ -35,6 +39,25 @@ public class NewPhotoActivity extends ActionBarActivity {
         }//else{
 //            loadThumbnail(mPhoto);
 //        }
+        
+        final EditText caption =  (EditText)findViewById(R.id.new_photo_caption);
+
+        Button saveButton =  (Button)findViewById(R.id.save_new_photo);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Save caption for photo
+                mPhoto.setCaption(caption.getText().toString());
+                //Send it back with an intent
+                Intent i = new Intent();
+                i.putExtra(PHOTO_EXTRA, mPhoto);
+                setResult(RESULT_OK, i);
+                //It will finish this activity
+                finish();
+
+            }
+        });
 
     }
 
@@ -45,7 +68,7 @@ public class NewPhotoActivity extends ActionBarActivity {
         if (requestCode == CAMERA_REQUEST) {
             if (resultCode == RESULT_OK) {
 
-                //To make it work we need to add permission in the manifest to allows as to read fom storage
+                //To make it work we need to add permission in the manifest to allows us to read fom storage
                 Picasso.with(this).load(mPhoto.getFile()).into(mPreview);
 
                 //Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
@@ -61,15 +84,18 @@ public class NewPhotoActivity extends ActionBarActivity {
 
     private void launchCamera(){
 
+        //It lunches the camera
         Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         mPhoto = new Photo();
 
+        //Tells the camara where to save the picture
         i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhoto.getFile()));
 
         startActivityForResult(i, CAMERA_REQUEST);
     }
 
+    //It is called when the activity is stop
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
