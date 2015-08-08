@@ -63,11 +63,11 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
         /*mTabBar.addTab(mTabBar.newTab().setText("HOME").setTabListener(this));
         mTabBar.addTab(mTabBar.newTab().setText("PROFILE").setTabListener(this));*/
 
-        //Attaching the fragment to the activity
+        //I get the fragment from the FrameLayout that is in the main activity
         mFeedFragment = (FeedFragment)getFragmentManager().findFragmentById(R.id.feed_container);
+        if (mFeedFragment == null){
 
-        if (mFeedFragment == null) {
-
+            //Attach the fragment
             mFeedFragment = new FeedFragment();
 
             getFragmentManager().beginTransaction()
@@ -91,12 +91,15 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_PHOTO_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Photo photo = (Photo)data.getSerializableExtra(NewPhotoActivity.PHOTO_EXTRA);
-                mFeedFragment.addPhoto(photo);
+                Log.d(TAG, "Photo Test: " + photo);
+                if (photo != null) {
+                    mFeedFragment.addPhoto(photo);
+                }
 
             }
 

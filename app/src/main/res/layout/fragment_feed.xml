@@ -4,7 +4,7 @@
              android:layout_height="match_parent"
              tools:context="bitfontain.juangomez.com.instacam.FeedFragment">
   
-  <!-- TODO: Update blank fragment layout -->
+  <!-- TODO: Add recycler view dependency first in the build.gradle(Module.app)-->
   <android.support.v7.widget.RecyclerView
     android:id="@+id/feed_recycler_view"
     android:layout_width="match_parent"

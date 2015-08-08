@@ -1,5 +1,6 @@
 package bitfontain.juangomez.com.instacam;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -15,13 +16,15 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 
-public class NewPhotoActivity extends ActionBarActivity {
+public class NewPhotoActivity extends ActionBarActivity implements NewPhotoFragment.Contract {
 
     private static final int CAMERA_REQUEST = 20;
     public static final String PHOTO_EXTRA = "PHOTO_EXTRA";
     private static final String PHOTO_STATE_EXTRA = "PHOTO";
-    private ImageView mPreview;
+    private static final String PHOTO_FILE = "PHOTO_FILE";
+
     Photo mPhoto;
+    private NewPhotoFragment fragment;
     //public BroadcastReceiver bc receiver =
 
     @Override
@@ -29,37 +32,40 @@ public class NewPhotoActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_photo);
 
-        mPreview = (ImageView)findViewById(R.id.photo_preview);
 
+        //*** Attaching the fragment to the activity ***
+        //Get NewPhotoFragment from FragmentLayot new_photo_frag_container
+        fragment = (NewPhotoFragment) getFragmentManager().findFragmentById(R.id.new_photo_frag_container);
+        if (fragment == null) {
+
+            fragment = new NewPhotoFragment();
+
+           /* //Send object to a fragment
+            Bundle bundle = new Bundle();
+            bundle.putString(PHOTO_FILE, "Juan");
+
+            fragment.setArguments(bundle);*/
+
+
+            getFragmentManager().beginTransaction()
+                    .add(R.id.new_photo_frag_container, fragment)
+                    .commit();
+
+        }
+
+        //We save here the information that we lost wen the activity is stop when the camera is activated.
         if (savedInstanceState != null) {
             mPhoto = (Photo)savedInstanceState.getSerializable(PHOTO_STATE_EXTRA);
+
         }
-        if (mPhoto == null) {
-            launchCamera();
-        }//else{
-//            loadThumbnail(mPhoto);
-//        }
-        
-        final EditText caption =  (EditText)findViewById(R.id.new_photo_caption);
-
-        Button saveButton =  (Button)findViewById(R.id.save_new_photo);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //Save caption for photo
-                mPhoto.setCaption(caption.getText().toString());
-                //Send it back with an intent
-                Intent i = new Intent();
-                i.putExtra(PHOTO_EXTRA, mPhoto);
-                setResult(RESULT_OK, i);
-                //It will finish this activity
-                finish();
-
-            }
-        });
 
     }
+
+    //Use this method to pass mPhoto object to NewPhotoFragment and access it in onCreateView
+    public Photo photoObj(){
+        return mPhoto;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -68,21 +74,16 @@ public class NewPhotoActivity extends ActionBarActivity {
         if (requestCode == CAMERA_REQUEST) {
             if (resultCode == RESULT_OK) {
 
-                //To make it work we need to add permission in the manifest to allows us to read fom storage
-                Picasso.with(this).load(mPhoto.getFile()).into(mPreview);
-
-                //Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
-                //mPreview.setImageBitmap(cameraImage);
-
-                /*// the address of the image on the SD Card.
-                Uri imageUri = data.getData();*/
+                //Let the fragment know that We get my photo back
+                fragment.updatePhoto(mPhoto);
 
             }
 
         }
     }
 
-    private void launchCamera(){
+    //Method implemented from Contract interface
+    public void launchCamera(){
 
         //It lunches the camera
         Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -91,14 +92,28 @@ public class NewPhotoActivity extends ActionBarActivity {
 
         //Tells the camara where to save the picture
         i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhoto.getFile()));
-
         startActivityForResult(i, CAMERA_REQUEST);
+
+
     }
 
-    //It is called when the activity is stop
+    //Method implemented from Contract interface
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    public void finishedPhoto(Photo photo) {
+        //Send it back with an intent
+        Intent i = new Intent();
+        i.putExtra(PHOTO_EXTRA, photo);
+        setResult(RESULT_OK, i);
+        //It will finish this activity and will go back to the activity that called this activity (main activity
+        finish();
+    }
+
+    //It is called when the activity is about to be destroyed
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
+        //Bundle saves extra information
         outState.putSerializable(PHOTO_STATE_EXTRA, mPhoto);
     }
 

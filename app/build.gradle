@@ -22,7 +22,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.1.1'
-    //Add this
+    //Add this to be able to use android.support.v7.widget.RecyclerView in fragment_feed
     compile 'com.android.support:recyclerview-v7:21.0.+'
     //Add this dependency to use cards
     compile 'com.android.support:cardview-v7:21.0.+'
@@ -34,6 +34,8 @@ dependencies {
     compile 'it.neokree:MaterialTabs:0.11'
     //Add picasso library
     compile 'com.squareup.picasso:picasso:2.5.2'
+    //Add facebook library. Videos https://www.youtube.com/watch?v=LUv8NDgu2Xk, https://www.youtube.com/watch?v=LrdUYk1wDlA
+    compile 'com.facebook.android:facebook-android-sdk:4.3.0'
 
 
 }

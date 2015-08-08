@@ -16,6 +16,8 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        //add this repository to use facebook library
+        mavenCentral()
         //Add repository
         mavenLocal()
     }
