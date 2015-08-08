@@ -30,6 +30,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
 
+            //These values come from the layout feed_item.xm
             mCaption = (TextView)itemView.findViewById((R.id.feed_item_caption));
             mPhoto = (ImageView)itemView.findViewById((R.id.feed_item_photo));
             mAvatar = (ImageView)itemView.findViewById((R.id.feed_item_user_avatar));
@@ -56,21 +57,25 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         return new ViewHolder(v);
     }
 
-    @Override
-    public int getItemCount() {
-        return mPhotos.size();
-    }
-
     //Here we bind the information
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
 
+        //Here we bind the values to the viewHolder. This is the last thing that we do
         //Get specific photo
         Photo photo = mPhotos.get(i);
+        User user = photo.getUser();
         //Add photo
         Picasso.with(mContext).load(photo.getFile()).into(viewHolder.mPhoto);
         ///Add captions
         viewHolder.mCaption.setText(photo.getCaption());
+        viewHolder.mUsername.setText(user.getFirstName() + " " + user.getLastName());
+        Picasso.with(mContext).load(user.getAvatarURL()).into(viewHolder.mAvatar);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mPhotos.size();
     }
 
 }
